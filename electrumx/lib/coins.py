@@ -2135,3 +2135,26 @@ class tBitg(Bitg):
     GENESIS_HASH = (
         '000008467c3a9c587533dea06ad9380cded3ed32f9742a6c0c1aebc21bf2bc9b')
     RPC_PORT = 19332
+
+class Obsidian(Coin):
+    NAME = "Obsidian"
+    SHORTNAME = "ODN"
+    NET = "mainnet"
+    XPUB_VERBYTES = bytes.fromhex("0488c21e")
+    XPRV_VERBYTES = bytes.fromhex("0488b2dd")
+    P2PKH_VERBYTE = bytes.fromhex("4b")
+    P2SH_VERBYTES = [bytes.fromhex("7d")]
+    WIF_BYTE = bytes.fromhex("cb")
+    GENESIS_HASH = (
+        '0000006dd8a92f58e952fa61c9402b74a381a69d1930fb5cc12c73273fab5f0a')
+    RPC_PORT = 56661
+    TX_COUNT = 1067887
+    TX_PER_BLOCK = 2
+    TX_COUNT_HEIGHT = 500000
+
+    @classmethod
+    def header_hash(cls, header):
+        '''Given a header return the hash.'''
+        from hashlib import sha512
+        print("{}", header)
+        return sha512(header).digest()[:32]

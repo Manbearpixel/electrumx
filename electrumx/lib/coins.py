@@ -90,7 +90,7 @@ class Coin(object):
         req_attrs = ['TX_COUNT', 'TX_COUNT_HEIGHT', 'TX_PER_BLOCK']
         for coin in util.subclasses(Coin):
             if (coin.NAME.lower() == name.lower() and
-                    coin.NET.lower() == net.lower()):
+                coin.NET.lower() == net.lower()):
                 coin_req_attrs = req_attrs.copy()
                 missing = [attr for attr in coin_req_attrs
                            if not hasattr(coin, attr)]
@@ -230,7 +230,7 @@ class Coin(object):
     def static_header_len(cls, height):
         '''Given a header height return its length.'''
         return (cls.static_header_offset(height + 1)
-                - cls.static_header_offset(height))
+           - cls.static_header_offset(height))
 
     @classmethod
     def block_header(cls, block, height):
@@ -2145,16 +2145,20 @@ class Obsidian(Coin):
     P2PKH_VERBYTE = bytes.fromhex("4b")
     P2SH_VERBYTES = [bytes.fromhex("7d")]
     WIF_BYTE = bytes.fromhex("cb")
-    GENESIS_HASH = (
-        '0000006dd8a92f58e952fa61c9402b74a381a69d1930fb5cc12c73273fab5f0a')
+    GENESIS_HASH = ('0000006dd8a92f58e952fa61c9402b74'
+                    'a381a69d1930fb5cc12c73273fab5f0a')
     RPC_PORT = 56661
     TX_COUNT = 1067887
     TX_PER_BLOCK = 2
     TX_COUNT_HEIGHT = 500000
+    DAEMON = daemon.LegacyRPCDaemon
+    #REORG_LIMIT = 5000
+    #RELAY_FEE = 0
+    #ESTIMATE_FEE = 0.0001
 
     @classmethod
     def header_hash(cls, header):
         '''Given a header return the hash.'''
         from hashlib import sha512
-        print("{}", header)
+        print(sha512(header).digest()[:32])
         return sha512(header).digest()[:32]

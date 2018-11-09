@@ -175,11 +175,14 @@ class Daemon(object):
         If replace_errs is true, any item with an error is returned as None,
         otherwise an exception is raised.'''
         def processor(result):
+            import sys
             errs = [item['error'] for item in result if item['error']]
             if any(err.get('code') == self.WARMING_UP for err in errs):
                 raise WarmingUpError
             if not errs or replace_errs:
                 return [item['result'] for item in result]
+            print(result)
+            sys.exit(0)
             raise DaemonError(errs)
 
         payload = [{'method': method, 'params': p, 'id': next(self.id_counter)}
@@ -362,6 +365,9 @@ class LegacyRPCDaemon(Daemon):
             return t
         return timegm(strptime(t, "%Y-%m-%d %H:%M:%S %Z"))
 
+
+class ObsidianDaemon(FakeEstimateFeeDaemon, LegacyRPCDaemon):
+    pass
 
 class DecredDaemon(Daemon):
     async def raw_blocks(self, hex_hashes):
